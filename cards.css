@@ -1,0 +1,25 @@
+body{
+	font-family:'IBM Plex Mono';
+}
+.card{
+	display:inline-block;
+	font-size:100pt;
+	line-height:100pt;
+}
+.bf::after{
+	display:inline-block;
+	content:'\1F0A0';
+	color:#1b2478;
+}
+.upsdwn{
+	transform:rotate(180deg) translateY(-6pt);
+}
+.upsdwn.bf{
+	transform-origin:25%;
+}
+.upsdwn.bf::after{
+	transform:translateX(-200%);
+}
+.r{
+	color:red;
+}

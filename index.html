@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>card encoder</title>
+		<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="cards.css">
+		<style>
+			#out{
+				margin-top:50px;
+			}
+		</style>
+	</head>
+	<body>
+		<a href="table.html">reference table</a><br>
+		The colours of the symbols are not relevant. Notice that all symbols will be converted to upper case.<br>
+		If a card is followed by a backface symbol (e.g. <div style="vertical-align:middle;" class="card bf">&#127199;</div>), turn the card before the backface symbol on its backface (in the example the Joker).
+		<hr>
+		<textarea id="in">Hello, World!</textarea>
+		<button onclick="encode()">go!</button>
+		<br>
+		<div id="out"></div>
+		<script>
+			var oriented=["&#127199;","&#127167;","<span class='r'>&#127153;</span>","&#127185;","&#127137;","<span class='r'>&#127155;</span>","&#127187;","&#127139;","<span class='r'>&#127157;</span>", "&#127189;","&#127141;","<span class='r'>&#127158;</span>","&#127190;","&#127142;","<span class='r'>&#127159;</span>","<span class='r'>&#127175;</span>","&#127191;","&#127143;","<span class='r'>&#127160;</span>","&#127192;","&#127144;","<span class='r'>&#127161;</span>","&#127193;","&#127145;"];
+			var alph="ABCDEFGHIJKLMNOPQRSTUVWXYZ .,&!?";
+
+			function encode(){
+				let codes=document.getElementById('in').value.toUpperCase()
+				.split('')
+				.filter((e)=>{
+					return alph.indexOf(e)!=-1;
+				});
+				document.getElementById('in').value=codes.join("");
+
+				codes=codes.map((e)=>{
+					return alph.indexOf(e);
+				});
+
+				let out=document.getElementById("out");
+				// empty the "out" area
+				while(out.firstChild)
+					out.removeChild(out.firstChild);
+
+				for(let i=0;i<codes.length;i++){
+					if(i*2%oriented.length==0)
+						out.appendChild(document.createElement("hr"));
+					let code=codes[i];
+
+					let c=document.createElement("div");
+					c.innerHTML=oriented[i*2%oriented.length];
+					c.classList.add("card");
+					if(code%8>3){
+						// first card upside down
+						c.classList.add("upsdwn");
+					}
+					if(code%16>7){
+						// first card on backface
+						c.classList.add("bf");
+					}
+					out.appendChild(c);
+
+					c=document.createElement("div");
+					c.innerHTML=oriented[i*2%oriented.length+1];
+					c.classList.add("card");
+					if(code%2==1){
+						// second card upside down
+						c.classList.add("upsdwn");
+					}
+					if(code%4>1){
+						// second card on backface
+						c.classList.add("bf");
+					}
+					out.appendChild(c);
+				}
+				out.appendChild(document.createElement("hr"));
+			}
+		</script>
+	</body>
+</html>
